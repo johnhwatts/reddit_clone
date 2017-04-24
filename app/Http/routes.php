@@ -13,14 +13,7 @@
 
 Route::get('/', 'HomeController@showWelcome');
 
-Route::get('/sayhello/{name?}', function($name = "World")
-{
-	if($name == "Bob") {
-		return Redirect::to("/");
-	}
-	$data = ['name' => $name];
-    return view('my-first-view', $data);
-});
+Route::get('/sayhello/{name?}', 'HomeController@sayHello');
 
 Route::get('/uppercase/{word?}', function($word = "Word") {
 	$data = ['lower' => $word, 'upper' => strtoupper("$word")];
