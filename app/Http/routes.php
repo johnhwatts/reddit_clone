@@ -15,21 +15,12 @@ Route::get('/', 'HomeController@showWelcome');
 
 Route::get('/sayhello/{name?}', 'HomeController@sayHello');
 
-Route::get('/uppercase/{word?}', function($word = "Word") {
-	$data = ['lower' => $word, 'upper' => strtoupper("$word")];
-    return view('uppercase', $data);
-});
+Route::get('/uppercase/{word?}', 'HomeController@uppercase');
 
-Route::get('/increment/{number?}', function ($number) {
-	$data = ['entered' => $number, 'incremented' => ++$number];
-    return view('increment', $data);
-});
+Route::get('/increment/{number?}', 'HomeController@increment');
 
-Route::get('/add/{num1?}/{num2?}', function ($num1, $num2) {
-    return $num1 + $num2;
-});
+Route::get('/add/{num1?}/{num2?}', 'ExampleController@add');
 
-Route::get('/rolldice/{guess?}', function($guess) {
-	$data = ['diceroll' => mt_rand(1, 6), 'guess' => $guess];
-	return view('roll-dice', $data);
-});
+Route::get('/rolldice/{guess?}', 'ExampleController@diceroll');
+
+Route::resource('posts', 'PostsController'); // A resource controller
