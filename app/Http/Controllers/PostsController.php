@@ -11,36 +11,44 @@ class PostsController extends Controller
 {
     public function index()
     {
-        return 'A listing of all posts';
+		$posts = \App\Models\Post::all();
+		$data['posts'] = $posts;
+        return view('posts.index', $data);
     }
 
     public function create()
     {
-        return 'Show a form for creating a post';
+        return view('posts.create');
     }
 
     public function store(Request $request)
     {
-        return 'Store the new post';
+        $post = new \App\Models\Post();
+		$post->title = $request->title;
+		$post->content = $request->content;
+		$post->url = $request->url;
+		$post->save();
+		return redirect('posts/index');
     }
 
     public function show($id)
     {
-        return 'Show a specific post';
+		$post = \App\Models\Post::find($id);
+		return view('posts.show', ['post'=>$post]);
     }
 
     public function edit($id)
     {
-        return 'Show a form for editing a specific post';
+        return view('posts.edit');
     }
 
     public function update(Request $request, $id)
     {
-        return 'Update a specific post';
+        return 'Updated post';
     }
 
     public function destroy($id)
     {
-        return 'Delete a specific post';
+        return 'Deleted post with ID' . $id;
     }
 }
