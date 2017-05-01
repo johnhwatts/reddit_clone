@@ -3,8 +3,8 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class DatabaseSeeder extends Seeder
-{
+class DatabaseSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
@@ -14,8 +14,14 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+        $this->command->info('Deleting users records');
+        // There are also comment() and error() methods that output different colors
 
-        Model::reguard();
+		DB::table('posts')->delete();
+        DB::table('users')->delete();
+
+        $this->call('UserTableSeeder');
+        $this->call('PostsTableSeeder');
     }
+
 }

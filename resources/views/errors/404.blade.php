@@ -11,7 +11,7 @@
             display: table;
             font-weight: 100;
             font-family: 'Lato';
-            font-size: 96px;">Welcome to Redditor</div>
+            font-size: 96px;">404 Error</div>
         </div>
     </div>
 @stop
