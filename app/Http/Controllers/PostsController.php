@@ -8,6 +8,10 @@ use Log;
 
 class PostsController extends Controller
 {
+	public function __construct(){
+
+		$this->middleware('auth', ['except' => ['index', 'show']]);
+	}
     // getting access to the request, is as a easy as adding it as a parameter to any controller
     // action
     public function index(Request $request)
@@ -22,41 +26,28 @@ class PostsController extends Controller
 //
 //        //$session->put('greet', 'hello world');  // $_SESSION['greet'] = 'hello world!';
 //        $session->flash('greeting', 'hello world');  // available only for the NEXT request
-        $posts = Post::paginate(4);
+        $posts = Post::with('user')->paginate(6);
         $data = [];
         $data['posts'] = $posts;
         return view('posts.index')->with($data);
     }
     public function create(Request $request)
     {
-        //$session = $request->session();
-        //$session->forget('greeting'); // unset($_SESSION['greet']);
-        //$session->flush(); // unset($_SESSION);  // $_SESSION = [];
-        //dd($session->get('greeting'));  // dd($_SESSION['greet']);
         return view('posts.create');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        $rules = [
-            'title' => 'required|max:100',
-            'url'   => 'required|url',
-            'content'   => 'required',
-        ];
+		$rules = Post::$rules;
         $this->validate($request, $rules);
         $post = new Post();
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
-        $post->created_by = 1;
+        $post->created_by = $request->id;
         $post->save();
 
-		Log::info("New post saved", $post->all());
+		Log::info("New post saved", $request->all());
 
         $request->session()->flash('successMessage', 'Post saved successfully');
         return redirect()->action('PostsController@show', [$post->id]);
@@ -82,12 +73,19 @@ class PostsController extends Controller
     public function edit(Request $request, $id)
     {
         $post = Post::find($id);
+
         if (!$post) {
-            $request->session()->flash('errorMessage', 'Post cannot be found');
-            return redirect()->action('PostsController@index');
+            Log::error("Post with id of $id not found.");
+            abort(404);
         }
+
+		if($post->user->id != Auth::id()) {
+			Session::flash('errorMessage', "Only the post author can edit this post.")
+			return redirect()=>action('PostsController@index')
+		}
         $data = [];
         $data['post'] = $post;
+		
         return view('posts.edit')->with($data);
     }
     /**
@@ -99,11 +97,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = [
-            'title' => 'required|max:100',
-            'url'   => 'required|url',
-            'content'   => 'required',
-        ];
+        $rules = Post::$rules;
         $this->validate($request, $rules);
         $post = Post::find($id);
         if (!$post) {
@@ -113,7 +107,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
-        $post->created_by = $request->created_by;
+        $post->created_by = $request->id;
         $post->save();
         $request->session()->flash('successMessage', 'Post saved successfully');
         return redirect()->action('PostsController@show', [$post->id]);

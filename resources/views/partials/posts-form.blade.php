@@ -6,7 +6,7 @@
 		id="title"
 		name="title"
 		class="form-control"
-		value="{{ old('title') }}"
+		 value="{{ $post->title }}"
 		{{ old('title') === 'on' ? 'checked' : '' }}
 	>
 </div>
@@ -17,7 +17,7 @@
 		id="content"
 		name="content"
 		class="form-control"
-		value="{{ old('content') }}"
+		value="{{ $post->content }}"
 		{{ old('content') === 'on' ? 'checked' : '' }}
 	>
 </div>
@@ -28,7 +28,7 @@
 		id="url"
 		name="url"
 		class="form-control"
-		value="{{ old('url') }}"
+		value="{{ $post->url }}"
 		{{ old('url') === 'on' ? 'checked' : '' }}
 	>
 </div>
