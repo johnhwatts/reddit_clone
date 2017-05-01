@@ -15,21 +15,17 @@
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav" id="navbar">
-				<li><a href="{{action('HomeController@showWelcome')}}">Home</a></li>
-				<li><a href="{{action('PostsController@index')}}">All Posts</a></li>
-				<li><a href="{{action('PostsController@create')}}">Create Posts</a></li>
-				<li><a href="{{action('PostsController@index')}}">Signup</a></li>
-				<li><a href="{{action('PostsController@index')}}">Login</a></li>
-				<!-- <?php if (Auth::check()):?>
-					<li><a href="/account">Your Account</a></li>
-					<li><a href="/create">Create Ad</a></li>
-					<li><a href="/logout">Logout</a></li>
+					<li><a href="{{action('HomeController@showWelcome')}}">Home</a></li>
+					<li><a href="{{action('PostsController@index')}}">All Posts</a></li>
+				<?php if (Auth::check()):?>
+					<li><a href="{{action('PostsController@create')}}">Create Posts</a></li>
+					<li><a href="{{action('Auth\AuthController@getLogout')}}">Logout</a></li>
 				<?php else: ?>
-					<li><a href="/signup">Signup</a></li>
-					<li><a href="/login">Login</a></li>
+					<li><a href="{{action('Auth\AuthController@getRegister')}}">Signup</a></li>
+					<li><a href="{{action('Auth\AuthController@getLogin')}}">Login</a></li>
 				<?php endif;?>
 			</ul>
-			<form class="navbar-form navbar-right" id="search" method="get" action="/search">
+			<!-- <form class="navbar-form navbar-right" id="search" method="get" action="/search">
 				<div class="form-group">
 					<input type="text" name="search" class="form-control" placeholder="Search Item" required>
 					<button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>

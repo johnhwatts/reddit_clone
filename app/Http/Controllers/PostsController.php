@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use Log;
+
 class PostsController extends Controller
 {
     // getting access to the request, is as a easy as adding it as a parameter to any controller
@@ -19,7 +22,7 @@ class PostsController extends Controller
 //
 //        //$session->put('greet', 'hello world');  // $_SESSION['greet'] = 'hello world!';
 //        $session->flash('greeting', 'hello world');  // available only for the NEXT request
-        $posts = \App\Models\Post::paginate(4);
+        $posts = Post::paginate(4);
         $data = [];
         $data['posts'] = $posts;
         return view('posts.index')->with($data);
@@ -46,24 +49,25 @@ class PostsController extends Controller
             'content'   => 'required',
         ];
         $this->validate($request, $rules);
-        $post = new \App\Models\Post();
+        $post = new Post();
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
         $post->created_by = 1;
         $post->save();
+
+		Log::info("New post saved", $post->all());
+
         $request->session()->flash('successMessage', 'Post saved successfully');
         return redirect()->action('PostsController@show', [$post->id]);
     }
     public function show(Request $request, $id)
     {
-        //$session = $request->session();
-        //dd(\Session::get('greeting'));  // Laravel 4
-        //dd($session->get('greeting'));  // Laravel 5
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
+
         if (!$post) {
-            $request->session()->flash('errorMessage', 'Post cannot be found');
-            return redirect()->action('PostsController@index');
+            Log::error("Post with id of $id not found.");
+			abort(404);
         }
         $data = [];
         $data['post'] = $post;
@@ -77,7 +81,7 @@ class PostsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
         if (!$post) {
             $request->session()->flash('errorMessage', 'Post cannot be found');
             return redirect()->action('PostsController@index');
@@ -101,7 +105,7 @@ class PostsController extends Controller
             'content'   => 'required',
         ];
         $this->validate($request, $rules);
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
         if (!$post) {
             $request->session()->flash('errorMessage', 'Post cannot be found');
             return redirect()->action('PostsController@index');
@@ -116,7 +120,7 @@ class PostsController extends Controller
     }
     public function destroy(Request $request, $id)
     {
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
         if (!$post) {
             $request->session()->flash('errorMessage', 'Post cannot be found');
             return redirect()->action('PostsController@index');

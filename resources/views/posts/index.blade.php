@@ -32,4 +32,6 @@
 		@endforeach
 	</table>
 
+{!! $posts->render() !!}
+
 @stop
