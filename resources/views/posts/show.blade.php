@@ -1,32 +1,19 @@
 @extends('layouts.master')
 
 @section('content')
-		<h1>Your new post</h1>
-		<table class= "table">
-			<tr>
-				<td>
-					Title
-				</td>
-				<td>
-					Content
-				</td>
-				<td>
-					URL
-				</td>
 
-			</tr>
-			<tr>
+	<h3>{{ $post->title }}</h3>
+	<article class= "col-md-4">
+		<p>{{ $post->url }}</p>
+		<p>{{ $post->content }}</p>
+		<p>on: <strong>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}</strong></p>
+		@if($post->created_at != $post->updated_at)
+			<p>Edited {{ $post->updated_at->setTimezone('America/Chicago')->diffForHumans() }}</p>
+		@endif
+	</article>
 
-				<td>
-					{{$post->title}}
-				</td>
-				<td>
-					{{$post->content}}
-				</td>
-				<td>
-					{{$post->url}}
-				</td>
+	@if (Auth::id() == $post->created_by)
+	 <a class="btn btn-primary" href="{{ action('PostsController@edit', $post->id) }}">Edit</a>
+	@endif
 
-			</tr>
-		</table>
 @stop

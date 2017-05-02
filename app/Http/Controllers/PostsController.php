@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Log;
+use Session;
 
 class PostsController extends Controller
 {
@@ -16,21 +17,22 @@ class PostsController extends Controller
     // action
     public function index(Request $request)
     {
-        //dd($request->session());  // The session is now an object, not an associative array
-        // we can get access to session through the request
-//        $session = $request->session();  // session_start();
-//
-//        $session->clear();  // \Session::clear()
-//        // Facade
-//        \Session::clear(); // $session->clear();
-//
-//        //$session->put('greet', 'hello world');  // $_SESSION['greet'] = 'hello world!';
-//        $session->flash('greeting', 'hello world');  // available only for the NEXT request
-        $posts = Post::with('user')->paginate(6);
+     	if(isset($request->search)) {
+			$posts = Post::select('posts.*')
+			->join('users', 'created_by', '=', 'users.id')
+			->where('title', 'like', "%$request->search%")
+			->orwhere('name', 'like', "%$request->search%")
+			->orderBy('posts.created_at', 'DESC')
+			->paginate(6)->appends(['search' =>$request->search]);
+		} else {
+			$posts = Post::with('user')->paginate(6);
+		}
+
         $data = [];
         $data['posts'] = $posts;
         return view('posts.index')->with($data);
     }
+
     public function create(Request $request)
     {
         return view('posts.create');
@@ -79,13 +81,13 @@ class PostsController extends Controller
             abort(404);
         }
 
-		if($post->user->id != Auth::id()) {
-			Session::flash('errorMessage', "Only the post author can edit this post.")
-			return redirect()=>action('PostsController@index')
+		if($post->user->id != \Auth::id()) {
+			Session::flash('errorMessage', "Only the post author can edit this post.");
+			return redirect()->action('PostsController@index');
 		}
         $data = [];
         $data['post'] = $post;
-		
+
         return view('posts.edit')->with($data);
     }
     /**

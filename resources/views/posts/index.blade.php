@@ -4,20 +4,35 @@
 
 		<h1>Posts</h1>
 
-		    @foreach($posts as $post)
-		        <article class="col-md-4">
-		            <h3><a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></h3>
-		            <p>{{ $post->url }}</p>
-		            <p>{{ $post->content }}</p>
-					<p>Posted by: <strong>{{ $post->user->name }}</strong></p>
-		            <p>on: <strong>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}</strong></p>
-		            @if($post->created_at != $post->updated_at)
-		                <p>Edited {{ $post->updated_at->setTimezone('America/Chicago')->diffForHumans() }}</p>
-		            @endif
 
-		        </article>
-		    @endforeach
+		        <table class="table table-bordered table-hover table-responsive">
+		            <thead>
+						<tr>
+							<th>Title</th>
+							<th>Content</th>
+							<th>URL</th>
+							<th>Posted by</th>
+							<th>Posted</th>
+							<th>Updated</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($posts as $post)
+					   <tr>
+						 <td><a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></td>
+						 <td>{{ $post->content }}</td>
+						 <td>{{ $post->url }}</td>
+						 <td>{{ $post->user->name }}</td>
+						 <td>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}</td>
+						 @if($post->created_at != $post->updated_at)
+						 <td>{{ $post->updated_at->setTimezone('America/Chicago')->diffForHumans() }}</td>
+						 @endif
+					 </tr>
+					 @endforeach
+				 </tbody>
+		        </table>
 
-{!! $posts->render() !!}
+
+		    {!! $posts->render() !!}
 
 @stop
