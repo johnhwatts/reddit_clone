@@ -2,11 +2,12 @@
 
 @section('content')
 
+
 <h1 style="text-align: center; margin-bottom: 5%;">{{ $user->name }}</h1>
 
 <div class="container">
 	<div class="row" id="itemsPage">
-		@foreach($posts as $post)
+		@foreach($user->posts as $post)
 			<div class="col-sm-4" >
 					<div class="panel panel-primary" >
 						<div class="panel-heading" id="itemsPanelColor">
@@ -20,8 +21,8 @@
 					</div>
 				</a>
 			</div>
+	
 		@endforeach
 
-{!! $posts->render() !!}
 
 @stop
