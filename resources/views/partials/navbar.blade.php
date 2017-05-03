@@ -18,7 +18,7 @@
 					<li><a href="{{action('HomeController@showWelcome')}}">Home</a></li>
 					<li><a href="{{action('PostsController@index')}}">All Posts</a></li>
 				<?php if (Auth::check()):?>
-					<li><a href="{{action('PostsController@index')}}">My Posts</a></li>
+					<li><a href="{{action('UserController@show')}}">My Posts</a></li>
 					<li><a href="{{action('PostsController@create')}}">Create Post</a></li>
 					<li><a href="{{action('Auth\AuthController@getLogout')}}">Logout</a></li>
 				<?php else: ?>
