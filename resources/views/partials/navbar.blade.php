@@ -18,6 +18,7 @@
 					<li><a href="{{action('HomeController@showWelcome')}}">Home</a></li>
 					<li><a href="{{action('PostsController@index')}}">All Posts</a></li>
 				<?php if (Auth::check()):?>
+					<li><a href="{{action('PostsController@index')}}">My Posts</a></li>
 					<li><a href="{{action('PostsController@create')}}">Create Post</a></li>
 					<li><a href="{{action('Auth\AuthController@getLogout')}}">Logout</a></li>
 				<?php else: ?>
@@ -27,7 +28,7 @@
 			</ul>
 			<form class="navbar-form navbar-right" id="search" method="get" action="{{action('PostsController@index')}}">
 				<div class="form-group">
-					<input type="text" name="search" class="form-control" placeholder="Search by user or keyword" required>
+					<input type="text" name="search" class="form-control" placeholder="user or keyword" required>
 					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 			</form>
