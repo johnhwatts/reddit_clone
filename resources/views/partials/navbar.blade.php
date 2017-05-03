@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<!-- <a href="/index"><img src="img/uploads/SL.ico" id="logo"></a> -->
-			<a class="navbar-brand" href="{{action('HomeController@showWelcome')}}" id="redditorName">Redditor</a>
+			<a class="navbar-brand" href="{{action('HomeController@showWelcome')}}" id="breaditName">Breadit</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
