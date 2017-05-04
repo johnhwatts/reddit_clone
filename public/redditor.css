@@ -12,6 +12,10 @@ a {
 	color: #fff;
 }
 
+article {
+    display: block;
+}
+
 .panel-primary>.panel-heading {
     color: #fff;
     background-color: #FFA53C;

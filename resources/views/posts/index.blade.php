@@ -4,23 +4,19 @@
 
 		<h1 style="text-align: center; margin-bottom: 5%;">Posts</h1>
 
-		<div class="container">
-			<div class="row" id="itemsPage">
-				@foreach($posts as $post)
-					<div class="col-sm-4" >
-							<div class="panel panel-primary" >
-								<div class="panel-heading" id="itemsPanelColor">
-									<a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></div>
-								<div class="panel-body">{{ substr($post->content, 0, 40) . "..." }}</div>
-								<div class="panel-body">{{ substr($post->url, 0, 40) . "..." }}</div>
-								<div class="panel-footer">Posted by: <strong>{{ $post->user->name }}
-									</strong> on: <strong>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}
-									</strong>
-								</div>
-							</div>
-						</a>
+				<div class="container">
+					<div class="row" id="itemsPage">
+						@foreach($posts as $post)
+						<article class= "col-md-4">
+							<p><a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></p>
+							<p>{{ substr($post->url, 0, 40) . "..." }}</p>
+							<p>{{ substr($post->content, 0, 40) . "..." }}</p>
+							<p>Posted by: <strong>{{ $post->user->name }}</strong></p>
+							<p>on: <strong>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}</strong></p>
+						</article>
+						@endforeach
 					</div>
-				@endforeach
+				</div>
 
 {!! $posts->render() !!}
 
