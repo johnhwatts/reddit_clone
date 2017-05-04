@@ -29,6 +29,8 @@
                 </div>
             @endif
         </div>
+		
+		<!-- Image upload -->
 		<div>
 	        @if (count($errors) > 0)
 				<div class="alert alert-danger">
