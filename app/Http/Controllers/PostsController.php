@@ -38,6 +38,18 @@ class PostsController extends Controller
         return view('posts.create');
     }
 
+	public function imageUploadPost(Request $request)
+	   {
+		   $this->validate($request, [
+			   'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+		   ]);
+		   $imageName = mt_rand(999,999999)."_".time()."_".$request->image->getClientOriginalExtension();
+		   //$type = $request->image->guessClientExtension();
+		   $request->image->move(public_path('uploads/images'), $imageName);
+		   $imagePath = asset('/public/uploads/images/')."/".$imageName;
+		   return $imageName;
+	   }
+
     public function store(Request $request)
     {
 		$rules = Post::$rules;
@@ -47,8 +59,12 @@ class PostsController extends Controller
         $post->url = $request->url;
         $post->content = $request->content;
         $post->created_by = $request->id;
-        $post->save();
 
+
+		if($request->hasFile('image')) {
+	    $post->image = $this->imageUploadPost($request);
+		}
+		$post->save();
 		Log::info("New post saved", $request->all());
 
         $request->session()->flash('successMessage', 'Post saved successfully');

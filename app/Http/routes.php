@@ -62,3 +62,15 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 
 // User route...
 Route::get('/myposts', 'UserController@show');
+
+// Image upload routes
+
+Route::get('image-upload',function(){
+   return view('upload.index');
+});
+Route::post('image-upload','PostsController@imageUploadPost');
+
+Route::get('image-upload',function(){
+   return view('upload.index');
+});
+Route::post('image-upload','PostsController@imageUploadPost');

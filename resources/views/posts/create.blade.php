@@ -2,7 +2,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <form action="{{ action('PostsController@store') }}" method="post">
+    <form action="{{ action('PostsController@store') }}" method="post" enctype="multipart/form-data">
         {!! csrf_field() !!}
         <div class="form-group">
             <label for="title">Title</label>
@@ -30,17 +30,58 @@
             @endif
         </div>
 		<div>
-			<form action="{{ url('image-upload') }}" enctype="multipart/form-data" method="post" role="form">
-				{{ csrf_field() }}
-				<div class="form-group">
-					<label for="image">Select File</label> <input id="image" name="image" type="file">
+	        @if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
 				</div>
-				<div>
-					<button class="btn btn-default btn-file" type="submit">Upload</button>
+			@endif
+
+			@if ($message = Session::get('success'))
+				<div class="alert alert-success alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>{{ $message }}</strong>
 				</div>
-			</form>
+				<img src="{{ Session::get('path') }}">
+			@endif
+
+			<div class="control-group">
+				 <label for="image">Image</label>
+					<div>
+						<span class="btn-primary btn-file">
+							<span class="fileupload-new"></span>
+							<input type="hidden" name="MAX_FILE_SIZE" value="1024000000" required/>
+							<input type="file" name="image" id="image" required/>
+						</span>
+
+			   		</div>
+					<img class="img-thumbnail thumbnail" id="preview" style="width: 200px; height: 150px;">
+					<div>
+						<button class="btn btn-primary" type="submit" style="margin-bottom: 5%;">
+ 							<i class="icon-user icon-white"></i>Save</button>
+					</div>
+			</div>
 		</div>
 		<input type="hidden" name="id" value="{{Auth::id()}}">
-        <input type="submit" value="Save" class="btn btn-primary">
     </form>
+
+	<!--JS to render image thumbnail-->
+
+	 <script type="text/javascript">
+	 document.getElementById("image").onchange = function () {
+		 var reader = new FileReader();
+
+		 reader.onload = function (e) {
+			 // get loaded data and render thumbnail.
+			 document.getElementById("preview").src = e.target.result;
+		 };
+
+		 // read the image file as a data URL.
+		 reader.readAsDataURL(this.files[0]);
+
+	 };
+	 </script>
 @stop

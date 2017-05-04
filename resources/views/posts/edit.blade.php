@@ -29,16 +29,67 @@
 	   			 </div>
 	   		 @endif
 	   	 </div>
+		 <div>
+ 	        @if (count($errors) > 0)
+ 				<div class="alert alert-danger">
+ 					<ul>
+ 						@foreach ($errors->all() as $error)
+ 							<li>{{ $error }}</li>
+ 						@endforeach
+ 					</ul>
+ 				</div>
+ 			@endif
+
+ 			@if ($message = Session::get('success'))
+ 				<div class="alert alert-success alert-block">
+ 					<button type="button" class="close" data-dismiss="alert">×</button>
+ 					<strong>{{ $message }}</strong>
+ 				</div>
+ 				<img src="{{ Session::get('path') }}">
+ 			@endif
+
+ 			<div class="control-group">
+ 				 <label for="image">Image</label>
+ 					<div>
+ 						<span class="btn-primary btn-file"><span class="fileupload-new"></span>
+ 							<input type="hidden" name="MAX_FILE_SIZE" value="1024000000" required/>
+ 							<input type="file" name="image" id="image" required/>
+						</span>
+					</div>
+ 						<img class="img-thumbnail thumbnail" id="preview" style="width: 200px; height: 150px;">
+					<div>
+						<button class="btn btn-primary" type="submit">
+ 							<i class="icon-user icon-white"></i>Save</button>
+					</div>
+ 			</div>
+
 		 {{ method_field('PUT') }}
 	   	 <input type="hidden" name="id" value="{{Auth::id()}}">
-	   	 <input type="submit" value="Save" class="btn btn-primary">
+	   	 <!-- <input type="submit" value="Save" class="btn btn-primary"> -->
 	    </form>
 
 		<!-- Delete post -->
 		<form action="{{ action('PostsController@destroy', [$post->id]) }}" method="POST">
-			<input type="submit" class="btn btn-danger" value="Delete">
+			<input type="submit" class="btn btn-danger" value="Delete" style="margin-top: 5px; margin-bottom: 5%;">
 			{!!csrf_field()!!}
 			{{ method_field('DELETE') }}
 		</form>
+
+		<!--JS to render image thumbnail-->
+
+		 <script type="text/javascript">
+		 document.getElementById("image").onchange = function () {
+			 var reader = new FileReader();
+
+			 reader.onload = function (e) {
+				 // get loaded data and render thumbnail.
+				 document.getElementById("preview").src = e.target.result;
+			 };
+
+			 // read the image file as a data URL.
+			 reader.readAsDataURL(this.files[0]);
+
+		 };
+		 </script>
 
 @stop
