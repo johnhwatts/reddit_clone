@@ -29,6 +29,17 @@
                 </div>
             @endif
         </div>
+		<div>
+			<form action="{{ url('image-upload') }}" enctype="multipart/form-data" method="post" role="form">
+				{{ csrf_field() }}
+				<div class="form-group">
+					<label for="image">Select File</label> <input id="image" name="image" type="file">
+				</div>
+				<div>
+					<button class="btn btn-default btn-file" type="submit">Upload</button>
+				</div>
+			</form>
+		</div>
 		<input type="hidden" name="id" value="{{Auth::id()}}">
         <input type="submit" value="Save" class="btn btn-primary">
     </form>

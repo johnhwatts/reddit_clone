@@ -4,7 +4,7 @@
 
 	<h3>{{ $post->title }}</h3>
 	<article class= "col-md-4">
-		<p>{{ $post->url }}</p>
+		<p><a href = "{{ ($post->url) }}">{{ ($post->url) }}</a></p>
 		<p>{{ $post->content }}</p>
 		<p>on: <strong>{{ $post->created_at->setTimezone('America/Chicago')->toDayDateTimeString() }}</strong></p>
 		@if($post->created_at != $post->updated_at)
