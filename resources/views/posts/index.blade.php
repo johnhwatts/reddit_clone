@@ -8,7 +8,7 @@
 					<div class="row" id="itemsPage">
 						@foreach($posts as $post)
 						<article class= "col-md-4">
-							<p><a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></p>
+							<h3><a href="{{ action('PostsController@show', $post->id) }}">{{ $post->title }}</a></h3>
 							<p>{{ substr($post->url, 0, 40) . "..." }}</p>
 							<p>{{ substr($post->content, 0, 40) . "..." }}</p>
 							<p>Posted by: <strong>{{ $post->user->name }}</strong></p>
