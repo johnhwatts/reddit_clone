@@ -25,7 +25,7 @@ class PostsController extends Controller
 			->orderBy('posts.created_at', 'DESC')
 			->paginate(6)->appends(['search' =>$request->search]);
 		} else {
-			$posts = Post::with('user')->paginate(6);
+			$posts = Post::with('user')->orderBy('posts.created_at', 'DESC')->paginate(6);
 		}
 
         $data = [];
